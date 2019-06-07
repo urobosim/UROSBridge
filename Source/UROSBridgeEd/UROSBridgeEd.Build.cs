@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class UROSBridge : ModuleRules
+public class UROSBridgeEd : ModuleRules
 {
-	public UROSBridge(ReadOnlyTargetRules Target) : base(Target)
+	public UROSBridgeEd(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -25,6 +25,8 @@ public class UROSBridge : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"Core",
+				"UROSBridge"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -37,15 +39,9 @@ public class UROSBridge : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"Core",
-				"Networking",
-				"PacketHandler",
-				"Sockets",
-				"libWebSockets",
-				"OpenSSL",
-				"zlib",
-				"Json",
-				"JsonUtilities"
+				"InputCore",
+				"UnrealEd",
+				"LevelEditor",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -57,8 +53,5 @@ public class UROSBridge : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
-
-		// Log ros msgs
-		PublicDefinitions.Add("LOG_ROS_MSGS=1");
 	}
 }
