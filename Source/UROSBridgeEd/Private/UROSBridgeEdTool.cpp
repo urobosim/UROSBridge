@@ -13,65 +13,91 @@ UROSBridgeEdTool::UROSBridgeEdTool(const FObjectInitializer& ObjectInitializer)
 
 void UROSBridgeEdTool::Connect()
 {
-	if(!RosHandler.IsValid())
+  UE_LOG(LogTemp, Error, TEXT("Connect to websocked"));
+        if(!RosHandler.IsValid())
 	{
 		RosHandler = MakeShareable<FROSBridgeHandler>(
 			new FROSBridgeHandler(ServerAdress, ServerPort));
 	}
 
-	// Register Services, Publisher and Subcriber 
+	// Register Services, Publisher and Subcriber
 	for (auto Pub : PublisherList)
 	{
-		//This Avoids registering the same Servers Multiple times
-		if (Pub && AlreadyRegistered.Find(Pub) == INDEX_NONE)
-		{
-			AlreadyRegistered.Add(Pub);
+          AlreadyRegistered.Add(Pub);
+          UE_LOG(LogTemp, Error, TEXT("Before Register"));
+          Pub->Register(Namespace);
+          UE_LOG(LogTemp, Error, TEXT("After Register"));
+          // Register SrvServers
+          for (auto SrvServer : Pub->ServicesToPublish)
+            {
+              RosHandler->AddServiceServer(SrvServer);
+            }
 
-			auto BaseClass = Pub->GetDefaultObject<UROSCallbackRegisterBase>();
+          // Register Publisher
+          for (auto Publisher : Pub->PublisherToPublish)
+            {
+              RosHandler->AddPublisher(Publisher);
+            }
 
-			// Make sure Outer is something GetWorld() can be called on.			
-			BaseClass->Rename(*BaseClass->GetName(), this);
-			BaseClass->Register(Namespace);
+          // Register Subscriber
+          for (auto Subscriber : Pub->SubscriberToPublish)
+            {
+              RosHandler->AddSubscriber(Subscriber);
+            }
 
-			// Register SrvServers
-			for (auto SrvServer : BaseClass->ServicesToPublish)
-			{
-				RosHandler->AddServiceServer(SrvServer);
-			}
+		// This Avoids registering the same Servers Multiple times
+		// if (Pub && AlreadyRegistered.Find(Pub) == INDEX_NONE)
+		// {
+		// 	AlreadyRegistered.Add(Pub);
 
-			// Register Publisher
-			for (auto Publisher : BaseClass->PublisherToPublish)
-			{
-				RosHandler->AddPublisher(Publisher);
-			}
+		// 	auto BaseClass = Pub->GetDefaultObject<UROSCallbackRegisterBase>();
 
-			// Register Subscriber
-			for (auto Subscriber : BaseClass->SubscriberToPublish)
-			{
-				RosHandler->AddSubscriber(Subscriber);
-			}
+		// 	// Make sure Outer is something GetWorld() can be called on.
+                //         UE_LOG(LogTemp, Error, TEXT("BaseName %s"), *Pub->GetClass()->GetName());
+		// 	BaseClass->Rename(*BaseClass->GetName(), this);
+		// 	BaseClass->Register(Namespace);
 
-		}
+		// 	// Register SrvServers
+		// 	for (auto SrvServer : BaseClass->ServicesToPublish)
+		// 	// for (auto SrvServer : Pub->ServicesToPublish)
+		// 	{
+		// 		RosHandler->AddServiceServer(SrvServer);
+		// 	}
+
+		// 	// Register Publisher
+		// 	for (auto Publisher : BaseClass->PublisherToPublish)
+		// 	{
+		// 		RosHandler->AddPublisher(Publisher);
+		// 	}
+
+		// 	// Register Subscriber
+		// 	for (auto Subscriber : BaseClass->SubscriberToPublish)
+		// 	{
+		// 		RosHandler->AddSubscriber(Subscriber);
+		// 	}
+
+		// }
 	}
 
-	bool bAdressChanged = (RosHandler->GetHost().Compare(ServerAdress) != 0) || (RosHandler->GetPort() != ServerPort);
-	// Set up Serveradress and callbacks
-	RosHandler->AddConnectedCallback(this, &UROSBridgeEdTool::ConnectedCallback);
-	RosHandler->AddErrorCallback(this, &UROSBridgeEdTool::ConnectionErrorCallback);
+	// bool bAdressChanged = (RosHandler->GetHost().Compare(ServerAdress) != 0) || (RosHandler->GetPort() != ServerPort);
+	// // Set up Serveradress and callbacks
+	// RosHandler->AddConnectedCallback(this, &UROSBridgeEdTool::ConnectedCallback);
+	// RosHandler->AddErrorCallback(this, &UROSBridgeEdTool::ConnectionErrorCallback);
 
-	// Connect
-	if (!RosHandler->IsConnected() || bAdressChanged)
-	{
-		RosHandler->SetHost(ServerAdress);
-		RosHandler->SetPort(ServerPort);
+	// // Connect
+	// if (!RosHandler->IsConnected() || bAdressChanged)
+	// {
+	// 	RosHandler->SetHost(ServerAdress);
+	// 	RosHandler->SetPort(ServerPort);
+	// 	RosHandler->Connect();
+	// }
+
 		RosHandler->Connect();
-	}
-
 }
 
 void UROSBridgeEdTool::Disconnect()
 {
-	RosHandler->Disconnect();
+        RosHandler->Disconnect();
 	AlreadyRegistered.Empty();
 }
 

@@ -15,7 +15,7 @@
  * arrays of an interfaces type.
  */
 
-UCLASS(abstract)
+UCLASS(abstract, Blueprintable, DefaultToInstanced, collapsecategories, hidecategories = Object, editinlinenew)
 class UROSBRIDGEED_API UROSCallbackRegisterBase : public UObject
 {
 	GENERATED_BODY()
@@ -24,7 +24,7 @@ public:
 	UROSCallbackRegisterBase(){}
 	~UROSCallbackRegisterBase() {}
 
-	/* 
+	/*
 	 * After call to this function the Arrays are expected to be set up correctly.
 	 * If Namespace is not needed, just ignore it. It will always be provided.
 	 */
