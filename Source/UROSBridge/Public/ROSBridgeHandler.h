@@ -195,20 +195,8 @@ private:
 	// Stop runnable / thread / client
 	void ThreadCleanup();
 
-	// ROS server ip as string
-	FString Host;
-
-	// ROS server port
-	int32 Port;
-
-	// Communication thread sleep duration
-	float ThreadSleep;
-
 	// Websocket client
 	TSharedPtr<FROSWebSocket> WSClient;
-
-	// Flag marking the connection
-	FThreadSafeBool bIsConnected;
 
 	// Pending Subscribers/Publishes/Server Services have not yet been sent to ROSBridge
 	TArray< TSharedPtr<FROSBridgeSubscriber> > ListPendingSubscribers;
@@ -234,6 +222,12 @@ private:
 	/** Index used to disambiguate thread instances for stats reasons */
 	static int32 ThreadInstanceIdx;
 
+	// ROS server ip as string
+	FString Host;
+
+	// ROS server port
+	int32 Port;
+
 	/** Callback delegate that will be triggered when an error occurs
 		User of the RosBridgeHandler can add their own callbacks by passing a 'FWebsocketInfoCallBack' to the Constructor */
 	FROSWebsocketInfoSignature ErrorCallbacks;
@@ -241,4 +235,10 @@ private:
 	/** Callback delegate that will be triggered when connection is established
 	User of the RosBridgeHandler can add their own callbacks by passing a 'FWebsocketInfoCallBack' to the Constructor */
 	FROSWebsocketInfoSignature ConnectedCallbacks;
+
+	// Communication thread sleep duration
+	float ThreadSleep;
+
+	// Flag marking the connection
+	FThreadSafeBool bIsConnected;
 };
