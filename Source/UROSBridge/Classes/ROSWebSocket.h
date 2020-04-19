@@ -92,6 +92,7 @@ public:
 
 	// Server address as string without port
 	FString ServerAddressAsString;
+	FString ServerAddressAsStringWithPort;
 
 	// Server port nr
 	int32 PortNr;
