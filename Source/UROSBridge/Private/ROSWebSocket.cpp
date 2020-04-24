@@ -45,6 +45,7 @@ FROSWebSocket::FROSWebSocket(const FInternetAddr& ServerAddress) : IsServerSide(
 {
 	// Server address as string without port
 	ServerAddressAsString = ServerAddress.ToString(false);
+	ServerAddressAsStringWithPort = ServerAddress.ToString(true);
 	PortNr = ServerAddress.GetPort();
 
 #if USE_LIBWEBSOCKET
@@ -74,6 +75,7 @@ FROSWebSocket::FROSWebSocket(const FInternetAddr& ServerAddress) : IsServerSide(
 	Info.gid = -1;
 	Info.uid = -1;
 	Info.user = this;
+
 	//Info.options |= LWS_SERVER_OPTION_DO_SSL_GLOBAL_INIT;
 
 	Context = lws_create_context(&Info);
@@ -93,7 +95,7 @@ void FROSWebSocket::Connect()
 {
 #if USE_LIBWEBSOCKET
 	struct lws_client_connect_info ConnectInfo = {
-			Context, TCHAR_TO_ANSI(*ServerAddressAsString), PortNr, false, "/", TCHAR_TO_ANSI(*ServerAddressAsString), TCHAR_TO_ANSI(*ServerAddressAsString), Protocols[1].name, -1, this
+			Context, TCHAR_TO_ANSI(*ServerAddressAsString), PortNr, false, "/", TCHAR_TO_ANSI(*ServerAddressAsStringWithPort), TCHAR_TO_ANSI(*ServerAddressAsStringWithPort), Protocols[1].name, -1, this
 	};
 	Wsi = lws_client_connect_via_info(&ConnectInfo);
 	if (Wsi)
