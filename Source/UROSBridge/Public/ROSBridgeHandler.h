@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ThreadingBase.h"
-#include "Queue.h"
+#include "CoreGlobals.h"
+#include "Containers/Queue.h"
 
 #include "ROSBridgeMsg.h"
 #include "ROSBridgeSrv.h"
@@ -115,8 +115,27 @@ class UROSBRIDGE_API FROSBridgeHandler
 	friend class FROSBridgeHandlerRunnable;
 
 public:
-	// Constructor
-	FROSBridgeHandler(const FString& InHost, int32 InPort);
+	FROSBridgeHandler(const FString& InHost, int32 InPort):
+		Host(InHost), Port(InPort),
+		ClientInterval(0.01),
+		bIsClientConnected(false)
+	{
+	}
+
+	//This creates a Handler with a custom ErrorCallback
+	FROSBridgeHandler(const FString& InHost, int32 InPort, FWebsocketInfoCallBack UserErrorCallbacks, FWebsocketInfoCallBack UserConnectedCallbacks) :
+		Host(InHost), Port(InPort),
+		ClientInterval(0.01),
+		bIsClientConnected(false),
+		ErrorCallbacks(UserErrorCallbacks),
+		ConnectedCallbacks(UserConnectedCallbacks)
+	{
+	}
+  
+	~FROSBridgeHandler()
+	{
+		ThreadCleanup();
+	}
 
 	// Constructor with custom error and connection callback
 	FROSBridgeHandler(const FString& InHost, int32 InPort,

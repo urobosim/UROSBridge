@@ -1,5 +1,6 @@
 // Copyright 2017-2019, Institute for Artificial Intelligence - University of Bremen
 
+using System.IO;
 using UnrealBuildTool;
 
 public class UROSBridge : ModuleRules
@@ -8,19 +9,8 @@ public class UROSBridge : ModuleRules
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
-		PublicIncludePaths.AddRange(
-			new string[] {
-				// ... add public include paths required here ...
-			}
-			);
-				
-		
-		PrivateIncludePaths.AddRange(
-			new string[] {
-				// ... add other private include paths required here ...
-			}
-			);
-			
+        	PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
+        	PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 		
 		PublicDependencyModuleNames.AddRange(
 			new string[]
