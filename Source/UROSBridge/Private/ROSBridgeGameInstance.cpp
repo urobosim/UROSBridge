@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Institute for Artificial Intelligence - University of Bremen
+// Copyright 2018, Institute for Artificial Intelligence - University of Bremen
 
 #include "ROSBridgeGameInstance.h"
 
@@ -17,7 +17,7 @@ void UROSBridgeGameInstance::OnStart()
 
 	if (!bConnectToROS) 
 	{
-		UE_LOG(LogROS, Warning, TEXT("ConnectToROS is false in GameInstance settings. Don't connect to rosbridge..."));
+		UE_LOG(LogTemp, Warning, TEXT("ConnectToROS is false in GameInstance settings. Don't connect to rosbridge..."));
 		return;
 	}
 

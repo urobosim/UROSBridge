@@ -1,4 +1,4 @@
-// Copyright 2017-2019, Institute for Artificial Intelligence - University of Bremen
+// Copyright 2018, Institute for Artificial Intelligence - University of Bremen
 
 using System.IO;
 using UnrealBuildTool;
@@ -15,6 +15,8 @@ public class UROSBridge : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"Core",
+				"Sockets"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -30,12 +32,11 @@ public class UROSBridge : ModuleRules
 				"Core",
 				"Networking",
 				"PacketHandler",
-				"Sockets",
 				"libWebSockets",
 				"OpenSSL",
-				"zlib",
+				"zlib",				
 				"Json",
-				"JsonUtilities"
+				"JsonUtilities",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
@@ -47,8 +48,5 @@ public class UROSBridge : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
-
-		// Log ros msgs
-		PublicDefinitions.Add("LOG_ROS_MSGS=1");
 	}
 }

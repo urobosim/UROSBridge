@@ -22,12 +22,6 @@ namespace std_msgs
 			MsgType = "std_msgs/ColorRGBA";
 		}
 
-		ColorRGBA(FColor InColor)
-		{
-			this->SetColor(InColor);
-			MsgType = "std_msgs/ColorRGBA";
-		}
-
 		ColorRGBA(float InR, float InG, float InB, float InA)
 		{
 			MsgType = "std_msgs/ColorRGBA";
@@ -37,29 +31,14 @@ namespace std_msgs
 		~ColorRGBA() override {}
 
 
-		//FVector4 GetColor() const
-		//{
-		//	return FVector4(R, G, B, A);
-		//}
-
-		FColor GetColor() const
+		FVector GetColor() const
 		{
-			return FColor(R, G, B, A);
+			return FVector4(R, G, B, A);
 		}
 
 		void SetColor(const FVector4& Vector)
 		{
 			R = Vector.X; G = Vector.Y; B = Vector.Z; A = Vector.W;
-		}
-
-		FColor GetColor()
-		{
-			return FColor(R,G,B,A);
-		}
-
-		void SetColor(const FColor Color)
-		{
-			R = Color.R; G = Color.G; B = Color.B; A = Color.A;
 		}
 
 		virtual void FromJson(TSharedPtr<FJsonObject> JsonObject) override 
